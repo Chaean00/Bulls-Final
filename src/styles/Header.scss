@@ -1,0 +1,27 @@
+.header {
+    padding-bottom: 76px;
+}
+
+// #nav-bar {
+//     background-color: #f2f5f7;
+// }
+
+.logo {
+    width: 50px;
+    margin-right: 10px;
+}
+
+// 반응형
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+    }
+    .nav-link {
+        padding-left: 20px;
+        padding-bottom: 20px;
+    }
+}
