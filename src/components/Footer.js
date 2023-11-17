@@ -9,32 +9,32 @@ export const Footer = () => {
             <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
                 <div className="me-5 d-none d-lg-block">
                     <span>Get connected with us on social networks:</span>
-                </div>1
+                </div>
 
                 <div>
                     <a
                         href="https://www.instagram.com/seolijuin/"
                         className="me-4 text-reset"
                     >
-                        <i class="bi bi-instagram"></i>
+                        <i className="bi bi-instagram"></i>
                     </a>
                     <a
                         href="https://mail.google.com/mail/u/0/?ogbl#inbox"
                         className="me-4 text-reset"
                     >
-                        <i class="bi bi-google"></i>
+                        <i className="bi bi-google"></i>
                     </a>
                     <a
                         href="https://github.com/Chaean00"
                         className="me-4 text-reset"
                     >
-                        <i class="bi bi-github"></i>
+                        <i className="bi bi-github"></i>
                     </a>
                     <a
                         href="https://open.kakao.com/o/gMHCvoSf"
                         className="me-4 text-reset"
                     >
-                        <i class="bi bi-chat-dots-fill"></i>
+                        <i className="bi bi-chat-dots-fill"></i>
                     </a>
                 </div>
             </section>
@@ -44,7 +44,7 @@ export const Footer = () => {
                     <MDBRow className="mt-3">
                         <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">
-                                <i class="bi bi-gem"></i>
+                                <i className="bi bi-gem"></i>
                                 Bulls FootBall
                             </h6>
                             <p>
@@ -128,15 +128,15 @@ export const Footer = () => {
                                 Contact
                             </h6>
                             <p>
-                                <i class="bi bi-house-door-fill"></i>
+                                <i className="bi bi-house-door-fill"></i>
                                 Seoul
                             </p>
                             <p>
-                                <i class="bi bi-envelope-fill"></i>
+                                <i className="bi bi-envelope-fill"></i>
                                 20191479@daejin.ac.kr
                             </p>
                             <p>
-                                <i class="bi bi-telephone-forward-fill"></i>
+                                <i className="bi bi-telephone-forward-fill"></i>
                                 010.4484.6950
                             </p>
                         </MDBCol>

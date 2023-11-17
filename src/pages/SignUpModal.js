@@ -14,7 +14,6 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
 
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
-        console.log(confirmPassword);
     };
 
     const handleInput = (e) => {
@@ -29,7 +28,6 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
         console.log("회원가입완료");
         console.log("user = ", user);
         if (user.password !== confirmPassword) {
-            console.log("비밀번호가 같지않음")
             setShowAlert(true) // 오류메세지 보여주기
             return;
         }
@@ -43,8 +41,6 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                 body: JSON.stringify(user)
             });
             if (response.ok) {
-                const responseData = await response.json();
-                console.log(responseData);
                 handleCloseModal();
             } else {
                 console.error('ERROR = ', response.status);
@@ -171,10 +167,10 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     className="input_box"
                                 />
                             </Col>
-                            <Alert show={showAlert} variant="danger">
-                                비밀번호가 같지 않습니다.
-                            </Alert>
                         </Form.Group>
+                        <Alert show={showAlert} variant="danger">
+                            비밀번호가 같지 않습니다.
+                        </Alert>
                         <div className="d-grid gap-1">
                             <Button
                                 variant="primary"

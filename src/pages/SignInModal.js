@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState} from "react";
 import { Modal, Form, Col, Button, Alert } from "react-bootstrap";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
     const [showAlert, setShowAlert] = useState(false);
-
     const [signinData, setSigninData] = useState({
         uid: "",
         password: "",
@@ -26,10 +25,9 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
 
     const handleSignin = async (event) => {
         event.preventDefault();
-        console.log("로그인 완료");
         console.log("signinData = ", signinData);
 
-        if (!signinData.userId || !signinData.password) {
+        if (!signinData.uid || !signinData.password) {
             setShowAlert(true); // 에러 메시지를 표시
         } else {
             const response = await fetch("/user/signin", {
@@ -40,12 +38,16 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                 body: JSON.stringify(signinData)
             })
             if (response.ok) {
-                console.log("로그인 성공!");
+                const data = await response.json();
+                localStorage.setItem("token", data.access);
                 setShowAlert(false); // 에러 메시지 감춤
                 setSigninData({
                     uid: "",
                     password: "",
                 });
+                handleCloseModal();
+                window.location.href = "/";
+
             } else {
                 console.log("로그인 실패")
             }

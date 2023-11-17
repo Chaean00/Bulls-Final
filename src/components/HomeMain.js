@@ -9,7 +9,7 @@ export const HomeMain = () => {
         <>
             <Container className="d-flex flex-column align-items-center">
                 <br />
-                <p>축구 하고싶은 당신! 상대 팀을 못구하고있다면?</p>
+                <p>축구 하고싶은 당신! <br/>상대 팀을 못구하고있다면?</p>
                 <h2>
                     Bulls FootBall을 통해
                     <br /> 상대 팀을 구해보세요.

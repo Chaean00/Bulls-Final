@@ -7,6 +7,7 @@ import { Inquiry } from "./pages/Inquiry";
 import { TeamRegistration } from "./pages/TeamRegistration";
 import { Footer } from "./components/Footer";
 import { MatchRegistration } from "./pages/MatchRegistration";
+import {User} from "./pages/User";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 path="/matchregistration"
                 element={<MatchRegistration />}
             ></Route>
+              <Route path="/user/info" element={<User />}></Route>
           </Routes>
         </BrowserRouter>
         <Footer />
