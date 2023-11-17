@@ -11,9 +11,9 @@ const Header = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const {loggedIn, setLoggedIn} = useContext(LoginContext);
-    const token = localStorage.getItem("token");
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
         if (token) {
             setLoggedIn(true);
         }
