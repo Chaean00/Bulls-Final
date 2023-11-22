@@ -20,10 +20,6 @@ export const Banner = () => {
                         src={banner}
                         alt={`${index + 1}번째 이미지`}
                     />
-                    <Carousel.Caption>
-                        <h4> 축구</h4>
-                        <p>p태그 위치</p>
-                    </Carousel.Caption>
                 </Carousel.Item>
             ))}
         </Carousel>

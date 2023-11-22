@@ -84,17 +84,17 @@ export const Footer = () => {
                             </p>
                             <p>
                                 <a
-                                    href="https://nextjs.org/"
+                                    href="https://spring.io/"
                                     className="text-reset"
                                 >
-                                    Next JS
+                                    Spring
                                 </a>
                             </p>
                         </MDBCol>
 
                         <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">
-                                Useful links
+                                Help
                             </h6>
                             <p>
                                 <a href="#!" className="text-reset">

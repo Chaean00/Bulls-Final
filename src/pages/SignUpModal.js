@@ -8,6 +8,7 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
         email: "",
         name: "",
         nickname: "",
+        introduce: "본인을 소개해주세요"
     });
     const [showAlert, setShowAlert] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');

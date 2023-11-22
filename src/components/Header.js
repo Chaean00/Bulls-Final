@@ -39,9 +39,6 @@ const Header = () => {
     }
 
 
-    console.log("login = " + loggedIn);
-
-
 
     return (
         <Container className="header">
