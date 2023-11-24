@@ -1,4 +1,4 @@
-.inquiry_container{
+.team_container{
   padding-left: 100px;
   padding-right: 100px;
   margin-top: 30px;
@@ -6,16 +6,18 @@
   width: 50%;
 }
 
-.inquiry_text {
+.team_text {
   text-align: center;
 }
-
-.inquiry_btn {
+.team_group {
+  margin-bottom: 20px;
+}
+.team_btn {
   float: right;
 }
 
 @media (max-width: 991px) {
-  .inquiry_container {
+  .team_container {
     padding: 10px;
     width: 90%;
   }

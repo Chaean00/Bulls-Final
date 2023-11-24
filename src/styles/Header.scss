@@ -1,14 +1,22 @@
 .header {
-    padding-bottom: 76px;
+    padding-bottom: 100px;
 }
 
-// #nav-bar {
-//     background-color: #f2f5f7;
-// }
+.header_container {
+    width: 70%;
+}
+
+.menu_icon {
+    padding-bottom: 3px;
+}
+
+// 드롭다운 화살표 제거
+.dropdown-toggle::after {
+    display: none;
+}
 
 .logo {
-    width: 50px;
-    margin-right: 10px;
+    width: 80px;
 }
 
 // 반응형
@@ -23,5 +31,8 @@
     .nav-link {
         padding-left: 20px;
         padding-bottom: 20px;
+    }
+    .header_container {
+        width: 90%;
     }
 }

@@ -1,4 +1,5 @@
 import "./App.css";
+
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
@@ -12,24 +13,24 @@ import {User} from "./pages/User";
 function App() {
   return (
       <>
-        <Header />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/about" element={<About />}></Route>
-            <Route path="/inquiry" element={<Inquiry />}></Route>
-            <Route
-                path="/teamregistration"
-                element={<TeamRegistration />}
-            ></Route>
-            <Route
-                path="/matchregistration"
-                element={<MatchRegistration />}
-            ></Route>
-              <Route path="/user/info" element={<User />}></Route>
-          </Routes>
-        </BrowserRouter>
-        <Footer />
+          <BrowserRouter>
+              <Header/>
+              <Routes>
+                  <Route path="/" element={<Home />}></Route>
+                  <Route path="/about" element={<About />}></Route>
+                  <Route path="/inquiry" element={<Inquiry />}></Route>
+                  <Route
+                      path="/teamregistration"
+                      element={<TeamRegistration />}
+                  ></Route>
+                  <Route
+                      path="/matchregistration"
+                      element={<MatchRegistration />}
+                  ></Route>
+                  <Route path="/user/info" element={<User />}></Route>
+              </Routes>
+              <Footer />
+          </BrowserRouter>
       </>
   );
 }

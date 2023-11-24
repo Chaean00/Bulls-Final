@@ -2,9 +2,12 @@ import {Container, Form,  Button} from "react-bootstrap";
 import {useContext, useState} from "react";
 import "../styles/Inquiry.scss"
 import LoginContext from "../context/LoginContext";
-import Swal from "sweetalert2";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {ShowAlert} from "../components/ShowAlert";
 
 export const Inquiry = () => {
+    const navigate = useNavigate();
     const {setLoggedIn} = useContext(LoginContext)
     const [inquiry, setInquiry] = useState({
         title: "",
@@ -24,22 +27,14 @@ export const Inquiry = () => {
         e.preventDefault()
         console.log(inquiry)
         try {
-            const response = await fetch("/inquiry/new", {
-                method: "POST",
+            const response = await axios.post("/inquiry/new", JSON.stringify(inquiry), {
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + localStorage.getItem("token")
-                },
-                body: JSON.stringify(inquiry)
+                }
             })
-            if (response.ok) {
-                Swal.fire({
-                    title: "문의 완료",
-                    text: "문의 해주셔서 감사합니다",
-                    icon: "success",
-                }).then(() => {
-                    window.location.href = "/"
-                })
+            if (response.status === 200) {
+                ShowAlert("문의 완료", "문의 해주셔서 감사합니다", "success", "/", navigate)
                 setInquiry({
                     title: "",
                     name: "",
@@ -47,16 +42,11 @@ export const Inquiry = () => {
                     email: "",
                     body: ""
                 })
+                console.log("ok = " + response.status)
             } if (response.status === 401 || response.status === 403) {
                 localStorage.removeItem("token")
                 setLoggedIn(false)
-                Swal.fire({
-                    title: "로그인 시간이 만료되었습니다.",
-                    text: "다시 로그인해주세요",
-                    icon: "error",
-                }).then(() => {
-                    window.location.href = "/"
-                })
+                ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
             } else {
                 console.log(response.status)
             }
@@ -101,7 +91,7 @@ export const Inquiry = () => {
                               value={inquiry.body}
                               onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={handleInquiry}>
+            <Button variant="primary" type="submit" onClick={handleInquiry} className="inquiry_btn">
                 문의하기
             </Button>
         </Form>

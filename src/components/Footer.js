@@ -2,8 +2,11 @@ import React from "react";
 import { MDBFooter, MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import "../styles/Footer.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import {Link} from "react-router-dom";
+
 
 export const Footer = () => {
+
     return (
         <MDBFooter id="footer" className="text-center text-lg-start text-muted">
             <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
@@ -112,9 +115,7 @@ export const Footer = () => {
                                 </a>
                             </p>
                             <p>
-                                <a href="/inquiry" className="text-reset">
-                                    도와주세요!
-                                </a>
+                                <Link to="/inquiry">Inquiry</Link>
                             </p>
                         </MDBCol>
 
@@ -151,9 +152,9 @@ export const Footer = () => {
                 © 2021 Copyright:
                 <a
                     className="text-reset fw-bold"
-                    href="https://mdbootstrap.com/"
+                    href="/"
                 >
-                    MDBootstrap.com
+                    Bulls FootBall
                 </a>
             </div>
         </MDBFooter>

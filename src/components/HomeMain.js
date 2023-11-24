@@ -43,7 +43,7 @@ export const HomeMain = () => {
                             className="homemain_image"
                         ></Image>
                         <strong>승리와 패배</strong>
-                        <p>승리는 겸손하게 자축하고,<br/> 패배는 배울 수 있는 기회로 삼으며 매너를 지켜주세요!</p>
+                        <p>승리는 겸손하게 자축하고 패배는 배울 수 있는 기회로 삼으며 매너를 지켜주세요!</p>
                     </Col>
                 </Row>
             </Container>

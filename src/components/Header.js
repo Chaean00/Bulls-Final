@@ -1,22 +1,27 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import Logo from "../images/logo/Bulls-removebg.png";
+import Logo from "../images/logo/bulls.png"
+import Logo2 from "../images/logo/logo_transparent.png"
 import "../styles/Header.scss";
 import {useContext, useEffect, useState} from "react";
 import SignUpModal from "../pages/SignUpModal";
 import { SignInModal } from "../pages/SignInModal";
 import LoginContext from "../context/LoginContext";
+import Menu from "../images/menu.svg"
+import {useNavigate} from "react-router-dom";
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const {loggedIn, setLoggedIn} = useContext(LoginContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
             setLoggedIn(true);
         }
+        console.log(loggedIn);
     },[])
 
     const handleSignInOpenModal = () => {
@@ -38,8 +43,6 @@ const Header = () => {
         window.location.href = "/";
     }
 
-
-
     return (
         <Container className="header">
             <Navbar
@@ -47,27 +50,27 @@ const Header = () => {
                 className="fixed-top navbar-custom"
                 id="nav-bar"
             >
-                <Container>
-                    <Navbar.Brand href="/">
-                        <img src={Logo} alt="로고" className="logo" />
-                        Bulls
+                <Container className="header_container">
+                    <Navbar.Brand onClick={() => navigate("/")} style={{cursor:"pointer"}}>
+                        <img src={Logo2} alt="로고" className="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto"></Nav>
-                        <Nav className="ml-auto">
-                            <NavDropdown title="Drop" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/about">
+                        <Nav className="me-auto">
+                            <NavDropdown title={<img src={Menu} alt="Menu Icon" className="menu_icon"/>} id="basic-nav-dropdown">
+                                <NavDropdown.Item onClick={() => navigate('/about')}>
                                     About
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="/inquiry">
+                                <NavDropdown.Item onClick={() => navigate("/inquiry")}>
                                     문의하기
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            <Nav.Link href="/teamregistration">
+                        </Nav>
+                        <Nav className="ml-auto">
+                            <Nav.Link onClick={() => navigate("/teamregistration")}>
                                 팀 등록
                             </Nav.Link>
-                            <Nav.Link href="/matchregistration">
+                            <Nav.Link onClick={() => navigate("/matchregistration")}>
                                 매칭 등록
                             </Nav.Link>
 
@@ -94,7 +97,7 @@ const Header = () => {
                                 showModal={showModal}
                                 handleCloseModal={handleCloseModal}
                             />
-                            <Nav.Link href="/user/info">
+                            <Nav.Link onClick={() => navigate("/user/info")}>
                                 내정보
                             </Nav.Link>
                         </Nav>

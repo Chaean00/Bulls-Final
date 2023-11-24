@@ -1,12 +1,17 @@
-import { useState} from "react";
+import {useContext, useState} from "react";
 import { Modal, Form, Col, Button, Alert } from "react-bootstrap";
+import axios from "axios";
+import LoginContext from "../context/LoginContext";
+import {useNavigate} from "react-router-dom";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
+    const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
     const [signinData, setSigninData] = useState({
         uid: "",
         password: "",
     });
+    const {setLoggedIn, loggedIn} = useContext(LoginContext)
 
     const handleInput = (e) => {
         setSigninData({
@@ -30,23 +35,23 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
         if (!signinData.uid || !signinData.password) {
             setShowAlert(true); // 에러 메시지를 표시
         } else {
-            const response = await fetch("/user/signin", {
-                method: 'POST',
+            const response = await axios.post("/user/signin", JSON.stringify(signinData), {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(signinData)
             })
-            if (response.ok) {
-                const data = await response.json();
+            if (response.status === 200) {
+                const data = await response.data;
                 localStorage.setItem("token", data.access);
                 setShowAlert(false); // 에러 메시지 감춤
                 setSigninData({
                     uid: "",
                     password: "",
                 });
+                setLoggedIn(true);
+                console.log(loggedIn)
                 handleCloseModal();
-                window.location.href = "/";
+                navigate('/')
 
             } else {
                 console.log("로그인 실패")
@@ -59,7 +64,7 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
         <>
             <Modal show={showModal} onHide={handleCloseModal} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>회원가입</Modal.Title>
+                    <Modal.Title>로그인</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -103,7 +108,7 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                                 type="submit"
                                 onClick={handleSignin}
                             >
-                                Sign In
+                                로그인
                             </Button>
                         </div>
                     </Form>
