@@ -8,6 +8,9 @@ import Mysql_Logo from "../images/skills_logo/mysql_icon.png"
 import Spring_Logo from "../images/skills_logo/spring_icon.png"
 import React_Logo from "../images/skills_logo/react_icon.png"
 import Rds_Logo from "../images/skills_logo/rds_icon.png"
+import Kim from "../images/profile/kim.jpeg"
+import Min from "../images/profile/min.jpeg"
+import Ryu from "../images/profile/ryu.jpeg"
 
 
 export const About = () => {
@@ -26,12 +29,13 @@ export const About = () => {
     }, [])
 
     return (
+        <>
         <Container>
-            <Container className="aboutUs_div">
+            <Container className="aboutUs_container">
                 <h1 className="aboutUs_text">About Us</h1>
             </Container>
             <Container>
-                <h2 className="we_used_text">We used</h2>
+                <h2 className="used_text">We used</h2>
             </Container>
             <Container className="skills_container">
                 <img src={Mysql_Logo} alt="Mysql Logo" className={`mysql_logo ${selectedImage === "Mysql Logo" ? "selected" : ""} skill`} onMouseEnter={handleMouseEnter}
@@ -47,11 +51,14 @@ export const About = () => {
                 <div className="role" data-aos="fade-right">
                     <p>Front | Design</p>
                 </div>
-                <Container data-aos="fade-right" className="about_div_top">
-                    <p>민나영</p>
-                    <p>대진대학교 3학년 컴퓨터공학전공</p>
-                    <p>20212149@daejin.ac.kr</p>
-                    <p>20212149</p>
+                <Container data-aos="fade-right" className="profile_container">
+                    <img src={Min} alt="Min" className="profile_img"/>
+                    <div className="profile_text">
+                        <p>민나영</p>
+                        <p>대진대학교 3학년 컴퓨터공학전공</p>
+                        <p>20212149@daejin.ac.kr</p>
+                        <p>20212149</p>
+                    </div>
                 </Container>
             </Container>
 
@@ -59,28 +66,35 @@ export const About = () => {
                 <div className="role" data-aos="fade-left">
                     <p>Front | Back | Design</p>
                 </div>
-                <Container data-aos="fade-left" className="about_div">
-                    <p>김정택</p>
-                    <p>대진대학교 3학년 컴퓨터공학전공</p>
-                    <p>jtkim965@naver.com</p>
-                    <p>20191479</p>
+                <Container data-aos="fade-left" className="profile_container">
+                    <img src={Kim} alt="Kim" className="profile_img"/>
+                    <div className="profile_text">
+                        <p>김정택</p>
+                        <p>대진대학교 3학년 컴퓨터공학전공</p>
+                        <p>jtkim965@naver.com</p>
+                        <p>20191479</p>
+                    </div>
                 </Container>
+            </Container>
+            <Container className="introduce_container">
                 <div className="role" data-aos="fade-right">
                     <p>Front | Back</p>
                 </div>
-            </Container>
-            <Container className="introduce_container">
-                <Container data-aos="fade-right" className="about_div_bottom">
-                    <p>류희수</p>
-                    <p>대진대학교 3학년 컴퓨터공학전공 </p>
-                    <p>hs201016@naver.comm</p>
-                    <p>20191303</p>
-                </Container>
-                <Container className="kakao_map">
-                    <h4>We Work in</h4>
-                    <KakaoMap/>
+                <Container data-aos="fade-right" className="profile_container">
+                    <img src={Ryu} alt="Ryu" className="profile_img"/>
+                    <div className="profile_text">
+                        <p>류희수</p>
+                        <p>대진대학교 3학년 컴퓨터공학전공 </p>
+                        <p>hs201016@naver.comm</p>
+                        <p>20191303</p>
+                    </div>
                 </Container>
             </Container>
         </Container>
+        <div className="kakao_map">
+        <h4 className="kakao_map_title">We Work in</h4>
+        <KakaoMap/>
+        </div>
+    </>
     )
 };

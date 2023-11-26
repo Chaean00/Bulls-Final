@@ -8,6 +8,7 @@ export const MatchRegistration = () => {
     const navigate = useNavigate();
     const {loggedIn} = useContext(LoginContext)
 
+
     useEffect(() => {
         if (!loggedIn) {
             ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
