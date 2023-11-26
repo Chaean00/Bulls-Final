@@ -11,7 +11,7 @@ export const Banner = () => {
     const Banners = [Banner1, Banner2, Banner3, Banner4, Banner5, Banner6];
 
     return (
-        <Carousel className="slide" interval={4000}>
+        <Carousel fade className="slide" interval={3000}>
             {Banners.map((banner, index) => (
                 <Carousel.Item key={index}>
                     <img

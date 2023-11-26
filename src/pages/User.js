@@ -6,6 +6,7 @@ import LoginContext from "../context/LoginContext";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
+import Swal from "sweetalert2";
 
 export const User = () => {
     const navigate = useNavigate();
@@ -27,48 +28,6 @@ export const User = () => {
             [e.target.name]: e.target.value
         });
     }
-    useEffect(() => {
-        if (!loggedIn) {
-            ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-        }
-
-        const getUserInfo = () => axios.get("/user/info",{
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        });
-
-        const getTeamInfo = () => axios.get("/team/info", {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        });
-
-        Promise.all([getUserInfo(), getTeamInfo()])
-            .then(([userResponse, teamResponse]) => {
-                // 각 응답에 대한 처리
-                if (userResponse.status === 200) {
-                    setUser(userResponse.data);
-                }
-                if (teamResponse.status === 200) {
-                    setTeam(teamResponse.data);
-                }
-
-                // 권한이 없는 경우
-                if (userResponse.status === 401 || userResponse.status === 403 || teamResponse.status === 401 || teamResponse.status === 403) {
-                    localStorage.removeItem("token")
-                    setLoggedIn(false)
-                    ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-                }
-                setLoading(true);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }, [])
-
     const handleUpdate = async () => {
         const response = await axios.post("/user/updateintroduce", JSON.stringify(newIntroduce), {
             headers: {
@@ -83,6 +42,107 @@ export const User = () => {
         }
 
     }
+    const handleDeleteTeam = async () => {
+        Swal.fire({
+            title: "정말로 팀을 탈퇴하시겠습니까?",
+            text: "다시 되돌릴 수 없습니다.",
+            icon: "question",
+            confirmButtonText: "확인",
+            showCancelButton: true,
+            cancelButtonColor: "#d33",
+            cancelButtonText: "취소"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("팀 탈퇴가 완료되었습니다.", "감사합니다.", "success");
+                const response = axios.get("/team/delete",{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                if (response.status === 200) {
+                    ShowAlert("팀 탈퇴가 안료되었습니다.", "감사합니다.", "success", "/user/info", navigate)
+                } else {
+                    console.log(response.status);
+                }
+            } else if (result.isDismissed) {
+                navigate("/user/info");
+            } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
+                navigate("/user/info");
+            }
+        })
+
+    }
+    useEffect(() => {
+        if (!loggedIn) {
+            ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
+        }
+
+        const getUserInfo = async () =>{
+            try {
+                const response = await axios.get("/user/info",{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                if (response.status === 200) {
+                    setUser(response.data);
+                    setLoading(true);
+                    await getTeamInfo();
+                }
+            } catch (error) {
+                localStorage.removeItem("token")
+                setLoggedIn(false);
+                console.log(error)
+            }
+        } ;
+
+        const getTeamInfo = async () => {
+            try {
+                const response = await axios.get("/team/info", {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+                if (response.status === 200) {
+                    setTeam(response.data);
+                } else {
+                    setTeam(null);
+                }
+            } catch (error) {
+                setTeam(null);
+                console.log(error);
+            }
+
+        }
+        getUserInfo();
+        // Promise.all([getUserInfo(), getTeamInfo()])
+        //     .then(([userResponse, teamResponse]) => {
+        //         // 각 응답에 대한 처리
+        //         if (userResponse.status === 200) {
+        //             setUser(userResponse.data);
+        //         }
+        //         if (teamResponse.status === 200) {
+        //             setTeam(teamResponse.data);
+        //         } else {
+        //             setTeam(null);
+        //         }
+        //
+        //         // 권한이 없는 경우
+        //         // if (userResponse.status === 401 || userResponse.status === 403 || teamResponse.status === 401 || teamResponse.status === 403) {
+        //         //     localStorage.removeItem("token");
+        //         //     setLoggedIn(false)
+        //         //     ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
+        //         //     // window.location.href = "/";
+        //         // }
+        //         setLoading(true);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+    }, [])
 
 
     return loggedIn ? (loading ?
@@ -103,7 +163,7 @@ export const User = () => {
                             <ListGroup.Item>{user.nickname}</ListGroup.Item>
                         </ListGroup>
                         <Card.Body>
-                            <Card.Link href="#" onClick={openModal}>소개 수정</Card.Link>
+                            <Card.Link onClick={openModal} style={{cursor: "pointer"}}>소개 수정</Card.Link>
                         </Card.Body>
                         <Modal show={modal} onHide={closeModal} centered>
                             <Modal.Header closeButton>
@@ -136,7 +196,7 @@ export const User = () => {
                     </Card>
                 </Col>
                 <Col xs={12} md={6}>
-                    {team ? (
+                    {team !== null ? (
                         <Card style={{ width: '18rem', margin: "auto" }} className="card">
                             <Card.Img variant="top" src={Person} className="card_img"/>
                             <Card.Body>
@@ -151,11 +211,11 @@ export const User = () => {
                                 <ListGroup.Item>{team.teamArea}</ListGroup.Item>
                             </ListGroup>
                             <Card.Body>
-                                <Card.Link href="#">팀 탈퇴</Card.Link>
+                                <Card.Link onClick={handleDeleteTeam} style={{cursor: "pointer"}}>팀 탈퇴</Card.Link>
                             </Card.Body>
                         </Card>) : (
                         <Card style={{ width: '18rem', margin: "auto" }} className="card">
-                            <Card.Img variant="top" src={Person} className="card_name"/>
+                            <Card.Img variant="top" src={Person} className="card_img"/>
                             <Card.Body>
                                 <Card.Title>팀 명</Card.Title>
                                 <br/>
@@ -177,7 +237,8 @@ export const User = () => {
             <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
-        </Container>) : (
+        </Container>)
+        : (
         <Container className="d-flex flex-column align-items-center">
             <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>

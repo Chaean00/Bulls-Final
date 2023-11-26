@@ -16,6 +16,6 @@ export const KakaoMap = () => {
     }, [])
 
     return (<div>
-        <div id="map" style={{width:"300px", height:"200px"}}></div>
+        <div id="map" style={{width:"100%", height:"500px"}}></div>
     </div>)
 }
