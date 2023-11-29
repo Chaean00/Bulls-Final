@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Card, Container, ListGroup, Spinner, Row, Col, Modal, Form, Button} from "react-bootstrap";
 import Person from "../images/person-circle.svg"
+import Team from "../images/team_icon.png"
 import "../styles/User.scss"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -203,7 +204,7 @@ export const User = () => {
                 <Col xs={12} md={6}>
                     {team !== null ? (
                         <Card style={{ width: '18rem', margin: "auto" }} className="card">
-                            <Card.Img variant="top" src={Person} className="card_img"/>
+                            <Card.Img variant="top" src={Team} className="card_img"/>
                             <Card.Body>
                                 <Card.Title>{team.teamName}</Card.Title>
                                 <br/>
@@ -214,6 +215,7 @@ export const User = () => {
                             <ListGroup className="list-group-flush">
                                 <ListGroup.Item>{team.teamPhone}</ListGroup.Item>
                                 <ListGroup.Item>{team.teamArea}</ListGroup.Item>
+                                <ListGroup.Item>{team.teamCaptain}</ListGroup.Item>
                             </ListGroup>
                             <Card.Body>
                                 <Card.Link onClick={handleDeleteTeam} style={{cursor: "pointer"}}>팀 탈퇴</Card.Link>
