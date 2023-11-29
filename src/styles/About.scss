@@ -31,8 +31,15 @@
 
     .profile_text {
       padding: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 2개의 열을 동일한 너비로 설정 */
+      grid-gap: 20px; /* grid 사이의 간격 설정 */
+      .sub_text {
+        font-size: 30px;
+        color: #f54a2c;
+      }
     }
-    // #ff7057 -> profile text 위에 ??
+
     .profile_img {
       border: thick solid #f54a2c;
       width: 300px; /* 원하는 너비 설정 */

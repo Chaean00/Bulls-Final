@@ -49,44 +49,80 @@ export const About = () => {
             </Container>
             <Container className="introduce_container">
                 <div className="role" data-aos="fade-right">
-                    <p>Front | Design</p>
+                    <p>Front-End&nbsp;&nbsp;&nbsp;&nbsp;Design</p>
                 </div>
                 <Container data-aos="fade-right" className="profile_container">
                     <img src={Min} alt="Min" className="profile_img"/>
                     <div className="profile_text">
-                        <p>민나영</p>
-                        <p>대진대학교 3학년 컴퓨터공학전공</p>
-                        <p>20212149@daejin.ac.kr</p>
-                        <p>20212149</p>
+                        <div>
+                            <h4 className="sub_text">Name</h4>
+                            <p>민나영</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Major</h4>
+                            <p>대진대학교 3학년 컴퓨터공학전공</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Email</h4>
+                            <p>20212149@daejin.ac.kr</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Student ID</h4>
+                            <p>20212149</p>
+                        </div>
                     </div>
                 </Container>
             </Container>
 
             <Container className="introduce_container">
                 <div className="role" data-aos="fade-left">
-                    <p>Front | Back | Design</p>
+                    <p>Front-End&nbsp;&nbsp;&nbsp;&nbsp;Back-End&nbsp;&nbsp;&nbsp;&nbsp;Design</p>
                 </div>
                 <Container data-aos="fade-left" className="profile_container">
                     <img src={Kim} alt="Kim" className="profile_img"/>
                     <div className="profile_text">
-                        <p>김정택</p>
-                        <p>대진대학교 3학년 컴퓨터공학전공</p>
-                        <p>jtkim965@naver.com</p>
-                        <p>20191479</p>
+                        <div>
+                            <h4 className="sub_text">Name</h4>
+                            <p>김정택</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Major</h4>
+                            <p>대진대학교 3학년 컴퓨터공학전공</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Email</h4>
+                            <p>jtkim965@naver.com</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Student ID</h4>
+                            <p>20191479</p>
+                        </div>
                     </div>
                 </Container>
             </Container>
             <Container className="introduce_container">
                 <div className="role" data-aos="fade-right">
-                    <p>Front | Back</p>
+                    <p>Front-End&nbsp;&nbsp;&nbsp;&nbsp;Back-End</p>
                 </div>
                 <Container data-aos="fade-right" className="profile_container">
                     <img src={Ryu} alt="Ryu" className="profile_img"/>
                     <div className="profile_text">
-                        <p>류희수</p>
-                        <p>대진대학교 3학년 컴퓨터공학전공 </p>
-                        <p>hs201016@naver.comm</p>
-                        <p>20191303</p>
+                        <div>
+                            <h4 className="sub_text">Name</h4>
+                            <p>류희수</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Major</h4>
+                            <p>대진대학교 3학년 컴퓨터공학전공</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Email</h4>
+                            <p>hs201016@naver.com</p>
+                        </div>
+                        <div>
+                            <h4 className="sub_text">Student ID</h4>
+                            <p>20191303</p>
+                        </div>
                     </div>
                 </Container>
             </Container>
