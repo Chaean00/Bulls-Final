@@ -1,7 +1,14 @@
 import LoginContext from "./LoginContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 const LoginProvider = ({children}) => {
     const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setLoggedIn(true);
+        }
+    }, [])
 
     return (
         <LoginContext.Provider value={{ loggedIn, setLoggedIn }}>

@@ -20,11 +20,11 @@ function App() {
                   <Route path="/about" element={<About />}></Route>
                   <Route path="/inquiry" element={<Inquiry />}></Route>
                   <Route
-                      path="/teamregistration"
+                      path="/team/registration"
                       element={<TeamRegistration />}
                   ></Route>
                   <Route
-                      path="/matchregistration"
+                      path="/match/registration"
                       element={<MatchRegistration />}
                   ></Route>
                   <Route path="/user/info" element={<User />}></Route>

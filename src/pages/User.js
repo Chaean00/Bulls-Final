@@ -1,18 +1,18 @@
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Card, Container, ListGroup, Spinner, Row, Col, Modal, Form, Button} from "react-bootstrap";
 import Person from "../images/person-circle.svg"
 import "../styles/User.scss"
-import LoginContext from "../context/LoginContext";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import Swal from "sweetalert2";
+import CryptoJs from "crypto-js";
 
 export const User = () => {
     const navigate = useNavigate();
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
     const [user, setUser] = useState({});
     const [team, setTeam] = useState({});
-    const {setLoggedIn, loggedIn} = useContext(LoginContext)
     const [modal, setModal] = useState(false);
     const [newIntroduce, setNewIntroduce] = useState({
         uid: "",
@@ -28,15 +28,31 @@ export const User = () => {
             [e.target.name]: e.target.value
         });
     }
+    // 유저 소개 업데이트
     const handleUpdate = async () => {
+        setNewIntroduce({
+            ...newIntroduce,
+            uid: user.uid
+        })
         const response = await axios.post("/user/updateintroduce", JSON.stringify(newIntroduce), {
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + localStorage.getItem("token")
+                "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
             }
         })
         if (response.status === 200) {
-            ShowAlert("소개 수정 완료.", "감사합니다.", "success", "/user/info", navigate)
+            Swal.fire({
+                title: "소개 수정 완료.",
+                text: "감사합니다.",
+                icon: "success",
+                confirmButtonText: "확인",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/user/info"
+                } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
+                    window.location.href = "/user/info"
+                }
+            })
         } else {
             console.log(response.status);
         }
@@ -51,17 +67,27 @@ export const User = () => {
             showCancelButton: true,
             cancelButtonColor: "#d33",
             cancelButtonText: "취소"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire("팀 탈퇴가 완료되었습니다.", "감사합니다.", "success");
-                const response = axios.get("/team/delete",{
+                const response = await axios.get("/team/delete",{
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + localStorage.getItem("token")
+                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
                     }
                 })
                 if (response.status === 200) {
-                    ShowAlert("팀 탈퇴가 안료되었습니다.", "감사합니다.", "success", "/user/info", navigate)
+                    Swal.fire({
+                        title: "팀 탈퇴가 완료되었습니다.",
+                        text: "감사합니다.",
+                        icon: "success",
+                        confirmButtonText: "확인",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/user/info";
+                        } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
+                            window.location.href = "/user/info";
+                        }
+                    })
                 } else {
                     console.log(response.status);
                 }
@@ -83,18 +109,22 @@ export const User = () => {
                 const response = await axios.get("/user/info",{
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + localStorage.getItem("token")
+                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
                     }
                 })
                 if (response.status === 200) {
                     setUser(response.data);
+                    setNewIntroduce({
+                        ...newIntroduce,
+                        uid: response.data.uid
+                    })
                     setLoading(true);
                     await getTeamInfo();
                 }
             } catch (error) {
-                localStorage.removeItem("token")
-                setLoggedIn(false);
-                console.log(error)
+                localStorage.removeItem("token");
+                localStorage.removeItem("loggedIn");
+                console.log(error);
             }
         } ;
 
@@ -103,7 +133,7 @@ export const User = () => {
                 const response = await axios.get("/team/info", {
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + localStorage.getItem("token")
+                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
                     }
                 });
                 if (response.status === 200) {
@@ -118,32 +148,7 @@ export const User = () => {
 
         }
         getUserInfo();
-        // Promise.all([getUserInfo(), getTeamInfo()])
-        //     .then(([userResponse, teamResponse]) => {
-        //         // 각 응답에 대한 처리
-        //         if (userResponse.status === 200) {
-        //             setUser(userResponse.data);
-        //         }
-        //         if (teamResponse.status === 200) {
-        //             setTeam(teamResponse.data);
-        //         } else {
-        //             setTeam(null);
-        //         }
-        //
-        //         // 권한이 없는 경우
-        //         // if (userResponse.status === 401 || userResponse.status === 403 || teamResponse.status === 401 || teamResponse.status === 403) {
-        //         //     localStorage.removeItem("token");
-        //         //     setLoggedIn(false)
-        //         //     ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-        //         //     // window.location.href = "/";
-        //         // }
-        //         setLoading(true);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
     }, [])
-
 
     return loggedIn ? (loading ?
         <Container className="d-flex flex-column align-items-center" id="card_container">

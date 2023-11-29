@@ -1,14 +1,12 @@
 import {Container, Form,  Button} from "react-bootstrap";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import "../styles/Inquiry.scss"
-import LoginContext from "../context/LoginContext";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 
 export const Inquiry = () => {
     const navigate = useNavigate();
-    const {setLoggedIn} = useContext(LoginContext)
     const [inquiry, setInquiry] = useState({
         title: "",
         name: "",
@@ -25,12 +23,10 @@ export const Inquiry = () => {
     }
     const handleInquiry = async (e) => {
         e.preventDefault()
-        console.log(inquiry)
         try {
             const response = await axios.post("/inquiry/new", JSON.stringify(inquiry), {
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + localStorage.getItem("token")
                 }
             })
             if (response.status === 200) {
@@ -45,13 +41,18 @@ export const Inquiry = () => {
                 console.log("ok = " + response.status)
             } if (response.status === 401 || response.status === 403) {
                 localStorage.removeItem("token")
-                setLoggedIn(false)
+                localStorage.removeItem("loggedIn")
                 ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
             } else {
                 console.log(response.status)
             }
         } catch (error) {
-            console.log("ERROR = " + error)
+            if (error.response?.status === 401) {
+                localStorage.removeItem("token")
+                localStorage.removeItem("loggedIn")
+                ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
+            }
+            console.log("Error = " + error)
         }
 
     }

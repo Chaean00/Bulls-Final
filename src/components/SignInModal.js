@@ -1,17 +1,18 @@
-import {useContext, useState} from "react";
-import { Modal, Form, Col, Button, Alert } from "react-bootstrap";
+import {useState} from "react";
+import {Modal, Form, Col, Button, Alert} from "react-bootstrap";
 import axios from "axios";
-import LoginContext from "../context/LoginContext";
 import {useNavigate} from "react-router-dom";
+import CryptoJs from "crypto-js"
+import Swal from "sweetalert2";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
-    const navigate = useNavigate();
+    const [validated, setValidated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
     const [signinData, setSigninData] = useState({
         uid: "",
         password: "",
     });
-    const {setLoggedIn, loggedIn} = useContext(LoginContext)
 
     const handleInput = (e) => {
         setSigninData({
@@ -26,35 +27,47 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
             userId: "",
             password: "",
         });
+        setValidated(false);
     };
 
     const handleSignin = async (event) => {
         event.preventDefault();
-        console.log("signinData = ", signinData);
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        setValidated(true);
 
         if (!signinData.uid || !signinData.password) {
-            setShowAlert(true); // 에러 메시지를 표시
+            setValidated(true)
         } else {
-            const response = await axios.post("/user/signin", JSON.stringify(signinData), {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            if (response.status === 200) {
-                const data = await response.data;
-                localStorage.setItem("token", data.access);
-                setShowAlert(false); // 에러 메시지 감춤
-                setSigninData({
-                    uid: "",
-                    password: "",
-                });
-                setLoggedIn(true);
-                console.log(loggedIn)
-                handleCloseModal();
-                navigate('/')
-
-            } else {
-                console.log("로그인 실패")
+            try {
+                const response = await axios.post("/user/signin", JSON.stringify(signinData), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                if (response.status === 200) {
+                    const data = await response.data;
+                    // JWT 토큰 암호화
+                    const encryption = CryptoJs.AES.encrypt(data.access, process.env.REACT_APP_SECRET_KEY);
+                    localStorage.setItem("token", encryption);
+                    localStorage.setItem("loggedIn", true);
+                    setSigninData({
+                        uid: "",
+                        password: "",
+                    });
+                    handleCloseModal();
+                    setShowAlert(false);
+                    navigate('/')
+                } else {
+                    console.log("로그인 실패")
+                }
+            } catch (error) {
+                if (error.response?.status === 400) {
+                    setShowAlert(true);
+                }
             }
 
         }
@@ -67,7 +80,7 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                     <Modal.Title>로그인</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form noValidate validated={validated}>
                         <Form.Group
                             className="mb-3"
                             controlId="formPlaintextPassword"
@@ -79,7 +92,11 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                                     name="uid"
                                     value={signinData.uid}
                                     onChange={handleInput}
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    아이디를 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -94,14 +111,16 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                                     name="password"
                                     value={signinData.password}
                                     onChange={handleInput}
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    비밀번호를 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-
                         <Alert show={showAlert} variant="danger">
-                            모든 필드를 입력하세요.
+                            계정이 존재하지 않거나 비밀번호가 일치하지 않습니다.
                         </Alert>
-
                         <div className="d-grid gap-1">
                             <Button
                                 variant="primary"

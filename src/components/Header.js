@@ -1,28 +1,19 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import Logo from "../images/logo/bulls.png"
 import Logo2 from "../images/logo/logo_transparent.png"
 import "../styles/Header.scss";
-import {useContext, useEffect, useState} from "react";
-import SignUpModal from "../pages/SignUpModal";
-import { SignInModal } from "../pages/SignInModal";
-import LoginContext from "../context/LoginContext";
+import {useState} from "react";
+import SignUpModal from "./SignUpModal";
+import { SignInModal } from "./SignInModal";
 import Menu from "../images/menu.svg"
 import {useNavigate} from "react-router-dom";
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
-    const {loggedIn, setLoggedIn} = useContext(LoginContext);
     const navigate = useNavigate();
+    const loggedIn = localStorage.getItem("loggedIn")
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            setLoggedIn(true);
-        }
-        console.log(loggedIn);
-    },[])
 
     const handleSignInOpenModal = () => {
         setShowSignInModal(true);
@@ -38,7 +29,8 @@ const Header = () => {
     };
     const logout = () => {
         localStorage.removeItem("token");
-        setLoggedIn(false);
+        localStorage.removeItem("loggedIn")
+        // setLoggedIn(false);
         console.log("로그아웃");
         window.location.href = "/";
     }
@@ -67,10 +59,10 @@ const Header = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav className="ml-auto">
-                            <Nav.Link onClick={() => navigate("/teamregistration")}>
+                            <Nav.Link onClick={() => navigate("/team/registration")}>
                                 팀 등록
                             </Nav.Link>
-                            <Nav.Link onClick={() => navigate("/matchregistration")}>
+                            <Nav.Link onClick={() => navigate("/match/registration")}>
                                 매칭 등록
                             </Nav.Link>
 

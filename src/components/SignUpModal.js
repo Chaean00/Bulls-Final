@@ -2,9 +2,10 @@ import { useState } from "react";
 import {Modal, Button, Form, Col, Alert} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "../components/ShowAlert";
+import {ShowAlert} from "./ShowAlert";
 
 const SignUpModal = ({ showModal, handleCloseModal }) => {
+    const [validated, setValidated] = useState(false);
     const navigate = useNavigate();
     const [user, setUser] = useState({
         uid: "",
@@ -30,6 +31,12 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
 
     const handleSignUp = async (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
+        setValidated(true);
+
         console.log("회원가입완료");
         console.log("user = ", user);
         if (user.password !== confirmPassword) {
@@ -73,6 +80,7 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
             nickname: "",
         });
         setConfirmPassword("");
+        setValidated(false);
     };
 
     return (
@@ -82,7 +90,7 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                     <Modal.Title>회원가입</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form noValidate validated={validated}>
                         <Form.Group
                             className="mb-3"
                             controlId="formPlaintextPassword"
@@ -95,7 +103,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={user.uid}
                                     onChange={handleInput}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    아이디를 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -111,7 +123,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={user.password}
                                     onChange={handleInput}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    비밀번호를 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -127,7 +143,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={confirmPassword}
                                     onChange={handleConfirmPasswordChange}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    비밀번호를 다시 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -143,7 +163,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={user.name}
                                     onChange={handleInput}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    이름을 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -156,7 +180,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={user.email}
                                     onChange={handleInput}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    이메일을 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -169,7 +197,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                     value={user.nickname}
                                     onChange={handleInput}
                                     className="input_box"
+                                    required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    닉네임을 입력 해주세요.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Alert show={showAlert} variant="danger">
@@ -182,7 +214,7 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
                                 onClick={handleSignUp}
                                 className="input_box"
                             >
-                                Sign Up
+                                회원가입
                             </Button>
                         </div>
                     </Form>
