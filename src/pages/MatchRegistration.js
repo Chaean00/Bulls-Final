@@ -1,7 +1,7 @@
 import {useEffect} from "react";
-import {Container, Spinner} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
+import {LoadingSpinner} from "../components/LoadingSpinner";
 
 export const MatchRegistration = () => {
     const navigate = useNavigate();
@@ -18,10 +18,6 @@ export const MatchRegistration = () => {
         <div>매칭 등록 페이지</div>
         ) :
         (
-            <Container className="d-flex flex-column align-items-center">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </Container>
+            <LoadingSpinner/>
         );
 };

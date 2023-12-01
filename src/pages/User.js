@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Card, Container, ListGroup, Spinner, Row, Col, Modal, Form, Button} from "react-bootstrap";
+import {Card, Container, ListGroup, Row, Col, Modal, Form, Button} from "react-bootstrap";
 import Person from "../images/person-circle.svg"
 import Team from "../images/team_icon.png"
 import "../styles/User.scss"
@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import Swal from "sweetalert2";
 import CryptoJs from "crypto-js";
+import {LoadingSpinner} from "../components/LoadingSpinner";
 
 export const User = () => {
     const navigate = useNavigate();
@@ -119,7 +120,6 @@ export const User = () => {
                         ...newIntroduce,
                         uid: response.data.uid
                     })
-                    setLoading(true);
                     await getTeamInfo();
                 }
             } catch (error) {
@@ -139,11 +139,11 @@ export const User = () => {
                 });
                 if (response.status === 200) {
                     setTeam(response.data);
-                } else {
-                    setTeam(null);
+                    setLoading(true);
                 }
             } catch (error) {
                 setTeam(null);
+                setLoading(true);
                 console.log(error);
             }
 
@@ -222,7 +222,7 @@ export const User = () => {
                             </Card.Body>
                         </Card>) : (
                         <Card style={{ width: '18rem', margin: "auto" }} className="card">
-                            <Card.Img variant="top" src={Person} className="card_img"/>
+                            <Card.Img variant="top" src={Team} className="card_img"/>
                             <Card.Body>
                                 <Card.Title>팀 명</Card.Title>
                                 <br/>
@@ -240,15 +240,7 @@ export const User = () => {
             </Row>
         </Container> :
         // 로딩중일때
-        <Container className="d-flex flex-column align-items-center">
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-        </Container>)
-        : (
-        <Container className="d-flex flex-column align-items-center">
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-        </Container>);
+        <LoadingSpinner/>)
+        : // 로딩중일때
+        (<LoadingSpinner/>);
 }

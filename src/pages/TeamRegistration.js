@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {Button, Container, Form, Spinner} from "react-bootstrap";
+import {Button, Container, DropdownButton, Form, Dropdown} from "react-bootstrap";
 import "../styles/TeamRegistration.scss"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import CryptoJs from "crypto-js";
 import Swal from "sweetalert2";
+import {LoadingSpinner} from "../components/LoadingSpinner";
 
 export const TeamRegistration = () => {
     const navigate = useNavigate();
@@ -72,8 +73,8 @@ export const TeamRegistration = () => {
             <Form>
                 <h3 className="team_text">팀 등록하기</h3>
                 <br/>
-                <p style={{textAlign: "right", fontSize: "14px"}}>* 팀은 유저당 하나만 등록할 수 있습니다.</p>
-                <p style={{textAlign: "right", fontSize: "14px"}}>* 이미 등록된 팀 명은 중복될 수 없습니다.</p>
+
+
                 <Container>
                     <Form.Group className="team_group" controlId="team_input1">
                         <Form.Label>팀 명</Form.Label>
@@ -104,19 +105,18 @@ export const TeamRegistration = () => {
                         <Form.Control type="textarea" placeholder="활동 지역" name="teamArea"
                                       value={team.teamArea}
                                       onChange={handleChange}/>
-                        <br/>
-                        <Button variant="primary" type="submit" onClick={handleTeam} className="team_btn">
-                            팀 등록하기
-                        </Button>
                     </Form.Group>
-
+                    <br/>
+                    <Button variant="primary" type="submit" onClick={handleTeam} className="team_btn">
+                        팀 등록하기
+                    </Button>
+                    <DropdownButton drop="down" id="dropdown-button-drop-down" title="유의사항" variant="secondary">
+                        <Dropdown.ItemText><p style={{fontSize: "16px"}}>* 팀은 유저당 하나만 등록할 수 있습니다.</p></Dropdown.ItemText>
+                        <Dropdown.ItemText><p style={{fontSize: "16px"}}>* 이미 등록된 팀 명은 중복될 수 없습니다.</p></Dropdown.ItemText>
+                    </DropdownButton>
                 </Container>
             </Form>
         </Container>) : (
-        <Container className="d-flex flex-column align-items-center">
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-        </Container>
+        <LoadingSpinner/>
     );
 };

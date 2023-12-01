@@ -6,6 +6,7 @@ import CryptoJs from "crypto-js"
 import Swal from "sweetalert2";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
+
     const [validated, setValidated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
@@ -60,6 +61,18 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
                     });
                     handleCloseModal();
                     setShowAlert(false);
+                    Swal.fire({
+                        title: "로그인이 완료되었습니다.",
+                        text: "환영 합니다.",
+                        icon: `success`,
+                        confirmButtonText: "확인",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/";
+                        } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
+                            window.location.href = "/";
+                        }
+                    })
                     navigate('/')
                 } else {
                     console.log("로그인 실패")

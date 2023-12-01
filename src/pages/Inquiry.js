@@ -52,6 +52,9 @@ export const Inquiry = () => {
                 localStorage.removeItem("loggedIn")
                 ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
             }
+            if (error.response?.status === 400) {
+                ShowAlert("형식이 올바르지 않습니다.", "다시 입력해주세요", "error", "/inquiry", navigate)
+            }
             console.log("Error = " + error)
         }
 
@@ -63,32 +66,32 @@ export const Inquiry = () => {
             <h3 className="inquiry_text">Contact Us</h3>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>제목</Form.Label>
-                <Form.Control type="textarea" placeholder="제목" name="title"
+                <Form.Control type="textarea" placeholder="문의 제목을 작성해주세요" name="title"
                               value={inquiry.title}
                               onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>이름</Form.Label>
-                <Form.Control type="textarea" placeholder="이름" name="name"
+                <Form.Control type="textarea" placeholder="이름을 작성해주세요" name="name"
                               value={inquiry.name}
                               onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>연락처</Form.Label>
-                <Form.Control type="textarea" placeholder="연락처"
+                    <Form.Control type="textarea" placeholder="전화번호를 작성해주세요"
                               name="phone"
                               value={inquiry.phone}
                               onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>이메일</Form.Label>
-                <Form.Control type="email" placeholder="이메일" name="email"
+                <Form.Control type="email" placeholder="이메일을 작성해주세요" name="email"
                               value={inquiry.email}
                               onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                 <Form.Label>문의 내용</Form.Label>
-                <Form.Control as="textarea" rows={5} placeholder="문의 내용" name="body"
+                <Form.Control as="textarea" rows={5} placeholder="문의 내용을 작성해주세요" name="body"
                               value={inquiry.body}
                               onChange={handleChange}/>
             </Form.Group>

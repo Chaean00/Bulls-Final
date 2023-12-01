@@ -9,6 +9,7 @@ import { TeamRegistration } from "./pages/TeamRegistration";
 import { Footer } from "./components/Footer";
 import { MatchRegistration } from "./pages/MatchRegistration";
 import {User} from "./pages/User";
+import {TeamList} from "./pages/TeamList";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                       element={<MatchRegistration />}
                   ></Route>
                   <Route path="/user/info" element={<User />}></Route>
+                  <Route path="/team/list" element={<TeamList />}></Route>
               </Routes>
               <Footer />
           </BrowserRouter>

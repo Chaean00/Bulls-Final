@@ -48,12 +48,11 @@ export const Footer = () => {
                         <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">
                                 <i className="bi bi-gem"></i>
-                                Bulls FootBall
+                                &nbsp;&nbsp;&nbsp;Bulls FootBall
                             </h6>
                             <p>
-                                Here you can use rows and columns to organize
-                                your footer content. Lorem ipsum dolor sit amet,
-                                consectetur adipisicing elit.
+                                Experience diverse soccer matches and build connections with fellow football enthusiasts through Bulls Football.
+                                Anyone who loves and enjoys soccer is welcome to join and create new friendships and connections on our platform.
                             </p>
                         </MDBCol>
 
@@ -105,17 +104,19 @@ export const Footer = () => {
                                 </a>
                             </p>
                             <p>
-                                <a href="#!" className="text-reset">
-                                    Settings
+                                <a href="/match/registration" className="text-reset">
+                                    매칭 등록
                                 </a>
                             </p>
                             <p>
-                                <a href="#!" className="text-reset">
-                                    Orders
+                                <a href="/team/registration" className="text-reset">
+                                    팀 등록
                                 </a>
                             </p>
                             <p>
-                                <Link to="/inquiry">Inquiry</Link>
+                                <a href="/inquiry" className="text-reset">
+                                    문의하기
+                                </a>
                             </p>
                         </MDBCol>
 
@@ -130,15 +131,15 @@ export const Footer = () => {
                             </h6>
                             <p>
                                 <i className="bi bi-house-door-fill"></i>
-                                Seoul
+                                &nbsp;&nbsp;Seoul
                             </p>
                             <p>
                                 <i className="bi bi-envelope-fill"></i>
-                                20191479@daejin.ac.kr
+                                &nbsp;&nbsp;20191479@daejin.ac.kr
                             </p>
                             <p>
                                 <i className="bi bi-telephone-forward-fill"></i>
-                                010.4484.6950
+                                &nbsp;&nbsp;010.4484.6950
                             </p>
                         </MDBCol>
                     </MDBRow>

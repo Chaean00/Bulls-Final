@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
-import Logo2 from "../images/logo/logo_transparent.png"
+import Logo from "../images/logo/LogoText.png"
 import "../styles/Header.scss";
 import {useState} from "react";
 import SignUpModal from "./SignUpModal";
@@ -12,9 +12,15 @@ const Header = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const navigate = useNavigate();
-    const loggedIn = localStorage.getItem("loggedIn")
+    const loggedIn = localStorage.getItem("loggedIn") // 로그인 여부
+    const [expanded, setExpanded] = useState(false); // 메뉴 보여주는지?
 
 
+
+
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }; // 모바일인지 아닌지?
     const handleSignInOpenModal = () => {
         setShowSignInModal(true);
     };
@@ -30,7 +36,6 @@ const Header = () => {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("loggedIn")
-        // setLoggedIn(false);
         console.log("로그아웃");
         window.location.href = "/";
     }
@@ -41,43 +46,95 @@ const Header = () => {
                 expand="lg"
                 className="fixed-top navbar-custom"
                 id="nav-bar"
+                expanded={expanded}
             >
                 <Container className="header_container">
-                    <Navbar.Brand onClick={() => navigate("/")} style={{cursor:"pointer"}}>
-                        <img src={Logo2} alt="로고" className="logo" />
+                    <Navbar.Brand onClick={() => {
+                        navigate("/");
+                        setExpanded(false);
+                    }} style={{cursor:"pointer"}}>
+                        <img src={Logo} alt="로고" className="logo" />
                     </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setExpanded(!expanded)}/>
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <NavDropdown title={<img src={Menu} alt="Menu Icon" className="menu_icon"/>} id="basic-nav-dropdown">
-                                <NavDropdown.Item onClick={() => navigate('/about')}>
-                                    About
-                                </NavDropdown.Item>
-                                <NavDropdown.Item onClick={() => navigate("/inquiry")}>
-                                    문의하기
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
+                        {isMobile() ? (<Nav>
+                            <Nav.Link onClick={() => {
+                                navigate("/team/list");
+                                setExpanded(false);
+                            }}>
+                                팀 리스트
+                            </Nav.Link>
+                            <Nav.Link onClick={() => {
+                                navigate("/about");
+                                setExpanded(false);
+                            }}>
+                                About
+                            </Nav.Link>
+                            <Nav.Link  onClick={() => {
+                                navigate("/inquiry");
+                                setExpanded(false);
+                            }}>
+                                문의하기
+                            </Nav.Link>
+                        </Nav>) : (
+                            <Nav className="me-auto">
+                                <NavDropdown title={<img src={Menu} alt="Menu Icon" className="menu_icon"/>} id="basic-nav-dropdown">
+                                    <NavDropdown.Item onClick={() => {
+                                        navigate('/team/list');
+                                        setExpanded(false);
+                                    }}>
+                                        팀 리스트
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => {
+                                        navigate('/about');
+                                        setExpanded(false);
+                                    }}>
+                                        About
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => {
+                                        navigate("/inquiry");
+                                        setExpanded(false);
+                                    }}>
+                                        문의하기
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                            </Nav>
+                        )}
                         <Nav className="ml-auto">
-                            <Nav.Link onClick={() => navigate("/team/registration")}>
+                            <Nav.Link onClick={() => {
+                                navigate("/team/registration");
+                                setExpanded(false);
+                            }}>
                                 팀 등록
                             </Nav.Link>
-                            <Nav.Link onClick={() => navigate("/match/registration")}>
+                            <Nav.Link onClick={() => {
+                                navigate("/match/registration")
+                                setExpanded(false);
+                            }}>
                                 매칭 등록
                             </Nav.Link>
 
-                            {loggedIn ?
-                                <Nav.Link onClick={logout}>
+                            {loggedIn ? (
+                                <Nav.Link onClick={() => {
+                                    setExpanded(false);
+                                    logout();
+                                }}>
                                     로그아웃
-                                </Nav.Link> : (
-                                <>
-                                    <Nav.Link onClick={handleSignInOpenModal}>
-                                        로그인
-                                    </Nav.Link>
-                                    <Nav.Link onClick={handleOpenModal}>
-                                        회원가입
-                                    </Nav.Link>
-                                </>
+                                </Nav.Link>) : (
+                                    <>
+                                        <Nav.Link onClick={() => {
+                                            handleSignInOpenModal();
+                                            setExpanded(false);
+                                        }}>
+                                            로그인
+                                        </Nav.Link>
+                                        <Nav.Link onClick={() => {
+                                            handleOpenModal();
+                                            setExpanded(false);
+                                        }}>
+                                            회원가입
+                                        </Nav.Link>
+                                    </>
                                 )
                             }
                             <SignInModal
@@ -89,7 +146,10 @@ const Header = () => {
                                 showModal={showModal}
                                 handleCloseModal={handleCloseModal}
                             />
-                            <Nav.Link onClick={() => navigate("/user/info")}>
+                            <Nav.Link onClick={() => {
+                                navigate("/user/info");
+                                setExpanded(false);
+                            }}>
                                 내정보
                             </Nav.Link>
                         </Nav>
