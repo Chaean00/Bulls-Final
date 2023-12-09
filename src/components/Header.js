@@ -7,8 +7,9 @@ import SignUpModal from "./SignUpModal";
 import { SignInModal } from "./SignInModal";
 import Menu from "../images/menu.svg"
 import {useNavigate} from "react-router-dom";
+import {RemoveData} from "./RemoveData";
 
-const Header = () => {
+export const Header = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const navigate = useNavigate();
@@ -34,9 +35,7 @@ const Header = () => {
         setShowModal(false);
     };
     const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("loggedIn")
-        console.log("로그아웃");
+        RemoveData();
         window.location.href = "/";
     }
 
@@ -59,10 +58,10 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         {isMobile() ? (<Nav>
                             <Nav.Link onClick={() => {
-                                navigate("/team/list");
+                                navigate("/match/list");
                                 setExpanded(false);
                             }}>
-                                팀 리스트
+                                매칭 리스트
                             </Nav.Link>
                             <Nav.Link onClick={() => {
                                 navigate("/about");
@@ -80,10 +79,10 @@ const Header = () => {
                             <Nav className="me-auto">
                                 <NavDropdown title={<img src={Menu} alt="Menu Icon" className="menu_icon"/>} id="basic-nav-dropdown">
                                     <NavDropdown.Item onClick={() => {
-                                        navigate('/team/list');
+                                        navigate('/match/list');
                                         setExpanded(false);
                                     }}>
-                                        팀 리스트
+                                        매칭 리스트
                                     </NavDropdown.Item>
                                     <NavDropdown.Item onClick={() => {
                                         navigate('/about');
@@ -159,5 +158,3 @@ const Header = () => {
         </Container>
     );
 };
-
-export default Header;

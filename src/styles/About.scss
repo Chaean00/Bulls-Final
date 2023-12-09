@@ -10,64 +10,11 @@
   }
 }
 
-.introduce_container {
-  width: 93%;
-  .role {
-    margin-top: 50px;
-    background-color: #404040;
-    color: white;
-    font-size: 30px;
-    display: inline-block;
-    height: 50px;
-    line-height: 40px;
-    padding: 5px;
-    border-radius: 18px;
-    //color: #f5654c;
-  }
-  .profile_container {
-    margin-top: 1%;
-    display: flex;
-    margin-bottom: 50px;
-
-    .profile_text {
-      padding: 60px;
-      display: grid;
-      grid-template-columns: 1fr 1fr; /* 2개의 열을 동일한 너비로 설정 */
-      grid-gap: 20px; /* grid 사이의 간격 설정 */
-      .sub_text {
-        font-size: 30px;
-        color: #f54a2c;
-      }
-    }
-
-    .profile_img {
-      border: thick solid #f54a2c;
-      width: 300px; /* 원하는 너비 설정 */
-      height: 300px; /* 원하는 높이 설정 */
-      border-radius: 50%; /* 이미지를 원형으로 만듦 */
-      object-fit: cover; /* 이미지 비율 유지하면서 채우기 */
-    }
-  }
-}
-
 .used_text {
-
   color: #f5654c;
   margin-left: 70px;
   font-size: 50px;
 }
-
-.kakao_map {
-  position: relative;
-  height: 100%;
-  //margin-bottom: 100px;
-  .kakao_map_title {
-    font-size: 50px;
-  }
-}
-
-
-
 
 .skills_container {
   margin-top: 50px;
@@ -78,6 +25,11 @@
     filter: brightness(50%);
     transition: filter 0.3s;
   }
+
+  .skill.selected {
+    filter: brightness(100%);
+  }
+
   // 로고 사이즈 조절
   .mysql_logo {
     width: 205px;
@@ -97,14 +49,60 @@
   }
 }
 
+.introduce_container {
+  width: 93%;
+  .role {
+    margin-top: 50px;
+    background-color: #404040;
+    color: white;
+    font-size: 30px;
+    display: inline-block;
+    height: 50px;
+    line-height: 40px;
+    padding: 5px;
+    border-radius: 18px;
+  }
+  .profile_container {
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 50px;
 
+    .profile_text {
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 2개의 열을 동일한 너비로 설정 */
+      grid-gap: 20px; /* grid 사이의 간격 설정 */
+      .sub_text {
+        font-size: 30px;
+        color: #f54a2c;
+      }
+    }
 
+    .profile_img {
+      border: thick solid #f54a2c;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}
 
-.skill.selected {
-  filter: brightness(100%);
+.kakao_map {
+  position: relative;
+  height: 100%;
+  .kakao_map_title {
+    font-size: 50px;
+  }
 }
 
 @media (max-width: 991px) {
+  .aboutUs_container{
+    .aboutUs_text {
+      font-size: 70px;
+    }
+  }
   .aboutUs_div {
     border: 0;
     border-bottom: thin solid black;
@@ -120,6 +118,18 @@
     flex-direction: column;
     align-items: center;
     width: 100px;
+    .skill {
+      //margin-bottom: 40px;
+    }
+  }
+  .introduce_container {
+    .role {
+      font-size: 24px;
+    }
+    .profile_container {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }
 

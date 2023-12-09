@@ -1,9 +1,7 @@
 import {useState} from "react";
 import {Modal, Form, Col, Button, Alert} from "react-bootstrap";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import CryptoJs from "crypto-js"
-import Swal from "sweetalert2";
+import {SignIn} from "../api/Api";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
 
@@ -43,46 +41,7 @@ export const SignInModal = ({ showModal, handleCloseModal }) => {
         if (!signinData.uid || !signinData.password) {
             setValidated(true)
         } else {
-            try {
-                const response = await axios.post("/user/signin", JSON.stringify(signinData), {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                if (response.status === 200) {
-                    const data = await response.data;
-                    // JWT 토큰 암호화
-                    const encryption = CryptoJs.AES.encrypt(data.access, process.env.REACT_APP_SECRET_KEY);
-                    localStorage.setItem("token", encryption);
-                    localStorage.setItem("loggedIn", true);
-                    setSigninData({
-                        uid: "",
-                        password: "",
-                    });
-                    handleCloseModal();
-                    setShowAlert(false);
-                    Swal.fire({
-                        title: "로그인이 완료되었습니다.",
-                        text: "환영 합니다.",
-                        icon: `success`,
-                        confirmButtonText: "확인",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "/";
-                        } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
-                            window.location.href = "/";
-                        }
-                    })
-                    navigate('/')
-                } else {
-                    console.log("로그인 실패")
-                }
-            } catch (error) {
-                if (error.response?.status === 400) {
-                    setShowAlert(true);
-                }
-            }
-
+            SignIn(navigate, signinData, setSigninData, handleCloseModal, setShowAlert);
         }
     };
 

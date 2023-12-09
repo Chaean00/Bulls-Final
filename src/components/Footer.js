@@ -2,7 +2,6 @@ import React from "react";
 import { MDBFooter, MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import "../styles/Footer.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import {Link} from "react-router-dom";
 
 
 export const Footer = () => {
@@ -16,22 +15,16 @@ export const Footer = () => {
 
                 <div>
                     <a
-                        href="https://www.instagram.com/seolijuin/"
+                        href="https://www.instagram.com/bulls_dj2023/"
                         className="me-4 text-reset"
                     >
                         <i className="bi bi-instagram"></i>
                     </a>
                     <a
-                        href="https://mail.google.com/mail/u/0/?ogbl#inbox"
+                        href="mailto:bulls0191@gmail.com"
                         className="me-4 text-reset"
                     >
                         <i className="bi bi-google"></i>
-                    </a>
-                    <a
-                        href="https://github.com/Chaean00"
-                        className="me-4 text-reset"
-                    >
-                        <i className="bi bi-github"></i>
                     </a>
                     <a
                         href="https://open.kakao.com/o/gMHCvoSf"
@@ -99,11 +92,6 @@ export const Footer = () => {
                                 Help
                             </h6>
                             <p>
-                                <a href="#!" className="text-reset">
-                                    Pricing
-                                </a>
-                            </p>
-                            <p>
                                 <a href="/match/registration" className="text-reset">
                                     매칭 등록
                                 </a>
@@ -131,15 +119,11 @@ export const Footer = () => {
                             </h6>
                             <p>
                                 <i className="bi bi-house-door-fill"></i>
-                                &nbsp;&nbsp;Seoul
+                                &nbsp;&nbsp;Gyeonggi-do
                             </p>
                             <p>
                                 <i className="bi bi-envelope-fill"></i>
-                                &nbsp;&nbsp;20191479@daejin.ac.kr
-                            </p>
-                            <p>
-                                <i className="bi bi-telephone-forward-fill"></i>
-                                &nbsp;&nbsp;010.4484.6950
+                                &nbsp;&nbsp;bulls0191@gmail.com
                             </p>
                         </MDBCol>
                     </MDBRow>

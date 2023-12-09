@@ -1,8 +1,7 @@
 import { useState } from "react";
 import {Modal, Button, Form, Col, Alert} from "react-bootstrap";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "./ShowAlert";
+import {Signup} from "../api/Api";
 
 const SignUpModal = ({ showModal, handleCloseModal }) => {
     const [validated, setValidated] = useState(false);
@@ -37,28 +36,11 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
         }
         setValidated(true);
 
-        console.log("회원가입완료");
-        console.log("user = ", user);
         if (user.password !== confirmPassword) {
             setShowAlert(true) // 오류메세지 보여주기
             return;
         }
-
-        try {
-            const response = await axios.post("/user/new", JSON.stringify(user), {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            if (response.status === 200) {
-                ShowAlert("회원가입이 완료되었습니다.", "환영합니다.", "success", "/", navigate)
-                handleCloseModal();
-            } else {
-                console.error('ERROR = ', response.status);
-            }
-        } catch (error) {
-            console.log("error", error)
-        }
+        await Signup(navigate, user, handleCloseModal)
 
         setUser({
             userId: "",

@@ -1,9 +1,8 @@
 import {Container, Form,  Button} from "react-bootstrap";
 import {useState} from "react";
 import "../styles/Inquiry.scss"
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "../components/ShowAlert";
+import {InquiryCreate} from "../api/Api";
 
 export const Inquiry = () => {
     const navigate = useNavigate();
@@ -23,41 +22,7 @@ export const Inquiry = () => {
     }
     const handleInquiry = async (e) => {
         e.preventDefault()
-        try {
-            const response = await axios.post("/inquiry/new", JSON.stringify(inquiry), {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            if (response.status === 200) {
-                ShowAlert("문의 완료", "문의 해주셔서 감사합니다", "success", "/", navigate)
-                setInquiry({
-                    title: "",
-                    name: "",
-                    phone: "",
-                    email: "",
-                    body: ""
-                })
-                console.log("ok = " + response.status)
-            } if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem("token")
-                localStorage.removeItem("loggedIn")
-                ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-            } else {
-                console.log(response.status)
-            }
-        } catch (error) {
-            if (error.response?.status === 401) {
-                localStorage.removeItem("token")
-                localStorage.removeItem("loggedIn")
-                ShowAlert("로그인 시간이 만료되었습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-            }
-            if (error.response?.status === 400) {
-                ShowAlert("형식이 올바르지 않습니다.", "다시 입력해주세요", "error", "/inquiry", navigate)
-            }
-            console.log("Error = " + error)
-        }
-
+        await InquiryCreate(navigate, inquiry, setInquiry);
     }
 
     return (

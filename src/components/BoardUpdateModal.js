@@ -1,16 +1,12 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "../components/ShowAlert";
-import {LoadingSpinner} from "../components/LoadingSpinner";
-import {Button, Container, Form} from "react-bootstrap";
-import "../styles/MatchRegistration.scss"
+import {Button,Form, Modal} from "react-bootstrap";
+import {useState} from "react";
 import Swal from "sweetalert2";
-import {RemoveData} from "../components/RemoveData";
-import {MatchCreate} from "../api/Api";
+import {useNavigate} from "react-router-dom";
+import {UpdateBoard} from "../api/Api";
 
-export const MatchRegistration = () => {
+export const BoardUpdateModal = ({ showModal, handleCloseModal, board }) => {
+
     const navigate = useNavigate();
-    const loggedIn = localStorage.getItem("loggedIn") === "true"
     const getCurrentDate = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -24,14 +20,33 @@ export const MatchRegistration = () => {
         const minutes = String(currentTime.getMinutes()).padStart(2, '0');
         return `${hours}:${minutes}`;
     };
+
+    const [inputs, setInputs] = useState({
+        matchTime: board.matchTime,
+        matchDate: board.matchDate,
+        postTime: getCurrentTime(),
+        postDate: getCurrentDate(),
+        place: board.place,
+        matchPlace: board.matchPlace,
+        matchPrice: board.matchPrice,
+        level: board.level,
+        canParking: board.canParking,
+        matchStatus: board.matchStatus,
+        numPerson: board.numPerson,
+        matchContact: board.matchContact,
+        mainText: board.mainText,
+    });
+
     const handleChange = (e) => {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value
         })
+        console.log(inputs)
     }
-    const handleRegistration = async (e) => {
-        e.preventDefault()
+
+    const handleUpdateBtn = async (e) => {
+        e.preventDefault();
         const todayDate = new Date();
         todayDate.setHours(0,0,0,0)
         const matchDate = new Date(inputs.matchDate);
@@ -47,7 +62,6 @@ export const MatchRegistration = () => {
             return;
         }
 
-
         // 날짜 확인
         if (matchDate < todayDate) {
             document.getElementById("matchDate").value = "";
@@ -55,50 +69,30 @@ export const MatchRegistration = () => {
             Swal.fire("오늘 이전의 날짜를 선택할 수 없습니다", "다시 선택해주세요", "error");
             return;
         }
-
-        await MatchCreate(navigate, inputs);
+        UpdateBoard(board.id, navigate, inputs, handleCloseModal)
     }
-    const [inputs, setInputs] = useState({
-        matchTime: '',
-        matchDate: '',
-        postTime: getCurrentTime(),
-        postDate: getCurrentDate(),
-        place: '',
-        matchPlace: '',
-        matchPrice: '',
-        level: '',
-        canParking: '',
-        matchStatus: '매칭중',
-        numPerson: '',
-        matchContact: '',
-        mainText: '',
-    });
 
-
-        useEffect(() => {
-            if (!loggedIn) {
-                RemoveData();
-                ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
-            }
-        }, [])
-
-        return loggedIn ? (
-            <Container className="inquiry_container">
+    return (
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>글 수정</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 <Form>
                     <h3 className="inquiry_text">매칭 등록하기</h3>
                     <Form.Group className="mb-3" controlId="ControlInput1">
                         <Form.Label>경기 날짜</Form.Label>
-                        <Form.Control id="matchDate" type="date" placeholder="경기 날짜" name="matchDate" value={inputs.matchDate}
+                        <Form.Control id="matchDate" type="date" placeholder="경기 날짜" name="matchDate" defaultValue={board.matchDate}
                                       onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlInput1">
                         <Form.Label>경기 시간</Form.Label>
-                        <Form.Control id="matchTime" type="time" placeholder="경기 시간" name="matchTime" value={inputs.matchTime}
+                        <Form.Control id="matchTime" type="time" placeholder="경기 시간" name="matchTime" defaultValue={board.matchTime}
                                       onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlInput1">
                         <Form.Label>지역</Form.Label>
-                        <Form.Select name="place" value={inputs.place} onChange={handleChange}>
+                        <Form.Select name="place" defaultValue={board.place} onChange={handleChange}>
                             <option value="" selected disabled hidden>지역을 선택해주세요</option>
                             <option value="서울">서울</option>
                             <option value="경기">경기</option>
@@ -109,17 +103,17 @@ export const MatchRegistration = () => {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>경기 장소</Form.Label>
-                        <Form.Control type="textarea" placeholder="경기 장소" name="matchPlace" value={inputs.matchPlace}
+                        <Form.Control type="textarea" placeholder="경기 장소" name="matchPlace" defaultValue={board.matchPlace}
                                       onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>구장 가격</Form.Label>
-                        <Form.Control type="number" placeholder="구장 가격" name="matchPrice" value={inputs.matchPrice}
+                        <Form.Control type="number" placeholder="구장 가격" name="matchPrice" defaultValue={board.matchPrice}
                                       onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>Level</Form.Label>
-                        <Form.Select name="level" value={inputs.level} onChange={handleChange}>
+                        <Form.Select name="level" defaultValue={board.level} onChange={handleChange}>
                             <option value="" selected disabled hidden>레벨을 선택해주세요</option>
                             <option value="하하">하하</option>
                             <option value="중하">중하</option>
@@ -131,15 +125,15 @@ export const MatchRegistration = () => {
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>주차 여부</Form.Label><br/>
                         <Form.Check inline type="radio" label="주차 가능" name="canParking" value="주차 가능"
-                                    onChange={handleChange}/>
+                                    onChange={handleChange} defaultChecked={board.canParking === "주차 가능"}/>
                         <Form.Check inline type="radio" label="주차 불가능" name="canParking" value="주차 불가능"
-                                    onChange={handleChange}/>
+                                    onChange={handleChange} defaultChecked={board.canParking === "주차 불가능"}/>
                         <Form.Check inline type="radio" label="주차 여부 모름" name="canParking" value="주차 여부 모름"
-                                    onChange={handleChange}/>
+                                    onChange={handleChange} defaultChecked={board.canParking === "주차 여부 모름"}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>모집 인원</Form.Label>
-                        <Form.Select name="numPerson" value={inputs.numPerson} onChange={handleChange}>
+                        <Form.Select name="numPerson" defaultValue={board.numPerson} onChange={handleChange}>
                             <option value="" selected disabled hidden>모집인원을 선택해주세요</option>
                             <option value="11vs11">11vs11</option>
                             <option value="10vs10">10vs10</option>
@@ -153,20 +147,26 @@ export const MatchRegistration = () => {
                     <Form.Group className="mb-3" controlId="ControlInput1">
                         <Form.Label>연락 방법</Form.Label>
                         <Form.Control type="textarea" placeholder="연락 방법" name="matchContact"
-                                      value={inputs.matchContact} onChange={handleChange}/>
+                                      defaultValue={board.matchContact} onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                         <Form.Label>본문</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="본문" name="mainText" value={inputs.mainText}
+                        <Form.Control as="textarea" rows={3} placeholder="본문" name="mainText" defaultValue={board.mainText}
                                       onChange={handleChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" className="regist_btn" onClick={handleRegistration}>
+
+                </Form>
+            </Modal.Body>
+            <Modal.Footer className="d-flex justify-content-between">
+                <div>
+                    <Button variant="primary" type="submit" className="regist_btn" onClick={handleUpdateBtn}>
                         등록하기
                     </Button>
-                </Form>
-            </Container>
-        ) :
-        (
-            <LoadingSpinner/>
-        );
-};
+                </div>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                    닫기
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
+}

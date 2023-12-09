@@ -1,10 +1,4 @@
 .header {
-    //.mobile {
-    //    display: none;
-    //}
-    //.desktop {
-    //    display: block;
-    //}
     padding-bottom: 100px;
     .header_container {
         width: 70%;
@@ -26,16 +20,10 @@
 
 // 반응형
 @media (max-width: 991px) {
-    //.mobile {
-    //    display: block;
-    //}
-    //.desktop {
-    //    display: none;
-    //}
     .header {
         padding-bottom: 120px;
         .header_container {
-            width: 95%;
+            width: 90%;
             .logo {
                 width: 140px;
                 height: auto;
@@ -55,9 +43,4 @@
         }
 
     }
-
-
-
-
-
 }

@@ -3,12 +3,11 @@ import {Card, Container, ListGroup, Row, Col, Modal, Form, Button} from "react-b
 import Person from "../images/person-circle.svg"
 import Team from "../images/team_icon.png"
 import "../styles/User.scss"
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import Swal from "sweetalert2";
-import CryptoJs from "crypto-js";
 import {LoadingSpinner} from "../components/LoadingSpinner";
+import {DeleteTeam, GetUser, UpdateIntroduce} from "../api/Api";
 
 export const User = () => {
     const navigate = useNavigate();
@@ -36,63 +35,20 @@ export const User = () => {
             ...newIntroduce,
             uid: user.uid
         })
-        const response = await axios.post("/user/updateintroduce", JSON.stringify(newIntroduce), {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
-            }
-        })
-        if (response.status === 200) {
-            Swal.fire({
-                title: "소개 수정 완료.",
-                text: "감사합니다.",
-                icon: "success",
-                confirmButtonText: "확인",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "/user/info"
-                } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
-                    window.location.href = "/user/info"
-                }
-            })
-        } else {
-            console.log(response.status);
-        }
-
+        await UpdateIntroduce(newIntroduce);
     }
     const handleDeleteTeam = async () => {
         Swal.fire({
             title: "정말로 팀을 탈퇴하시겠습니까?",
             text: "다시 되돌릴 수 없습니다.",
-            icon: "question",
+            icon: "danger",
             confirmButtonText: "확인",
             showCancelButton: true,
             cancelButtonColor: "#d33",
             cancelButtonText: "취소"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await axios.get("/team/delete",{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
-                    }
-                })
-                if (response.status === 200) {
-                    Swal.fire({
-                        title: "팀 탈퇴가 완료되었습니다.",
-                        text: "감사합니다.",
-                        icon: "success",
-                        confirmButtonText: "확인",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "/user/info";
-                        } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
-                            window.location.href = "/user/info";
-                        }
-                    })
-                } else {
-                    console.log(response.status);
-                }
+                await DeleteTeam();
             } else if (result.isDismissed) {
                 navigate("/user/info");
             } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
@@ -105,50 +61,7 @@ export const User = () => {
         if (!loggedIn) {
             ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
         }
-
-        const getUserInfo = async () =>{
-            try {
-                const response = await axios.get("/user/info",{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
-                    }
-                })
-                if (response.status === 200) {
-                    setUser(response.data);
-                    setNewIntroduce({
-                        ...newIntroduce,
-                        uid: response.data.uid
-                    })
-                    await getTeamInfo();
-                }
-            } catch (error) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("loggedIn");
-                console.log(error);
-            }
-        } ;
-
-        const getTeamInfo = async () => {
-            try {
-                const response = await axios.get("/team/info", {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Authorization": "Bearer " + CryptoJs.AES.decrypt(localStorage.getItem("token"), process.env.REACT_APP_SECRET_KEY).toString(CryptoJs.enc.Utf8)
-                    }
-                });
-                if (response.status === 200) {
-                    setTeam(response.data);
-                    setLoading(true);
-                }
-            } catch (error) {
-                setTeam(null);
-                setLoading(true);
-                console.log(error);
-            }
-
-        }
-        getUserInfo();
+        GetUser(navigate, setUser, setTeam, setLoading, newIntroduce, setNewIntroduce);
     }, [])
 
     return loggedIn ? (loading ?
